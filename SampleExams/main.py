@@ -23,10 +23,13 @@ class Lotto:
         probability = succ_tries / sample_size
         return probability
 
+def zapisz(L1):
+    file_name = str(L1.numbers[0] + L1.numbers[1])
+    file = open(f"{file_name}.txt", "w")
+    file.write(f"{Lotto.calc_prob(10000)}")
+    file.close
+
+
 lotto1 = Lotto(6)
-lotto2 = lotto1
 
-if lotto1.check(lotto2):
-    print("yes")
-
-print(f"{Lotto.calc_prob(100000) * 100}%")
+zapisz(lotto1)

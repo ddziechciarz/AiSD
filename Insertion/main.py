@@ -1,5 +1,6 @@
 import random
 import time
+import heapq
 
 
 def insertionsort(A):
@@ -46,7 +47,7 @@ def mergesort(A, start, end):
 
 
 if __name__ == '__main__':
-    num_of_iterations = 100
+    num_of_iterations = 20
     len_of_array = 10000
 
     insertion_times, merge_times = [], []

@@ -1,7 +1,5 @@
 import random
 import time
-import heapq
-
 
 def insertionsort(A):
     for i in range(1, len(A)):

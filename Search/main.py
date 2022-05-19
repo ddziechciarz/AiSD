@@ -31,31 +31,20 @@ def rabin_horizontal(text, pattern, d, q):
     h = pow(d, m - 1) % q
     result = []
 
-    # pattern_hash = 0
-    # for i in range(m):
-    #     pattern_hash = (d * pattern_hash + ord(pattern[i])) % q
+    pattern_hash = 0
+    for i in range(m):
+        pattern_hash = (d * pattern_hash + ord(pattern[i])) % q
 
-    for x in range(n - 2):
-        p = 0
-        t = 0
-
-        for i in range(m):
-            p = (d * p + ord(pattern[i])) % q
-            t = (d * t + ord(text[x][i])) % q
-        for y in range(n - m + 1):
-            if p == t:
-                found = True
-                for i in range(m):
-                    if text[x][y + i] != pattern[i]:
-                        found = False
-                        break
-                if found:
-                    result.append((x,y))
-            if y < n - m:
-                t = ((t - h * ord(text[x][y])) * d + ord(text[x][y + m])) % q
+    for line_index in range(n - 2):
+        text_hash = 0
+        for b in range(m):
+            text_hash = (d * text_hash + ord(text[line_index][b])) % q
+        for s in range(n - m):
+            if text_hash == pattern_hash:
+                if pattern == text[line_index][s:s+m]:
+                    result.append((line_index, s))
+            text_hash = (d * (text_hash - ord(text[line_index][s]) * h) + ord(text[line_index][s + m])) % q
     return result
-
-
 
 def rabin_vertical(text, pattern, result):
     m = len(pattern)
@@ -73,7 +62,7 @@ def rabin_vertical(text, pattern, result):
 
 def karp_search(text, pattern, d, q):
     hor_res = rabin_horizontal(text, pattern, d, q)
-    return rabin_vertical(text, pattern, d, q, hor_res)
+    return rabin_vertical(text, pattern, hor_res)
 
 def test_case(naive_pattern, karp_pattern, array_sizes, alphabet):
     d = len(alphabet)
@@ -91,6 +80,7 @@ def test_case(naive_pattern, karp_pattern, array_sizes, alphabet):
         karp_time = time.time() - karp_start
         result.append((round(naive_time, 2), round(karp_time, 2)))
         f.close()
+        print(f"done iteration with data size: {test}")
     return result
 
 if __name__ == "__main__":
@@ -103,3 +93,8 @@ if __name__ == "__main__":
     test_sizes = ['1000', '2000', '3000', '4000', '5000', '8000']
 
     print(test_case(pattern, test_pattern, test_sizes, alphabet))
+
+    # f = open("patterns/1000_pattern.txt")
+    # line = f.readlines()
+
+    #print(karp_search(line, test_pattern, 16, 17))

@@ -53,4 +53,5 @@ if __name__ == '__main__':
 
     cities = load_data()
     print(nearest_neigh(cities))
+    print(fast_sol(cities))
 
